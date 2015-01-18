@@ -16,5 +16,6 @@ To run automated tests:
 
 ## Todo:
 * Add Swift-on-File storage policy
+* remove need for `--ask-sudo-pass`
 * Add ability to provide gerrit ssh keys and setup `git review`
 
