@@ -1,18 +1,20 @@
 SAIO Ansible playbook
 =========
 
-An Ansible playbook for provisioning a swift all-in-one development environment.
-Based on the steps described here: http://docs.openstack.org/developer/swift/development_saio.html
+An Ansible playbook for provisioning a swift all-in-one development environment
+on Fedora. Based on the steps described here: http://docs.openstack.org/developer/swift/development_saio.html
 
 ## To run:
-Currently, you will need to provision your own VM and update the file
-`inventory` with the IP address of the VM, then run:
-~~~
-ansible-playbook site.yml -i inventory --ask-sudo-pass
-~~~
+To provision the VM, run:
+1. `vagrant up`
+
+To run automated tests:
+1. `vagrant ssh`
+1. `cd swift`
+1. `tox -e py27`
+1. `tox -e func`
 
 ## Todo:
-* Provide Vagrant file to provision VM
 * Add Swift-on-File storage policy
 * Add ability to provide gerrit ssh keys and setup `git review`
 

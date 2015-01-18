@@ -1,8 +1,8 @@
 - hosts: all
   sudo: True
   vars:
-    username: "thiago"
-    group: "thiago"
+    username: "vagrant"
+    group: "vagrant"
   tasks:
   - name: installing dependencies
     yum: name={{ item }} state=present
