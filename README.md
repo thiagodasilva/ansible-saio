@@ -6,16 +6,15 @@ on Fedora. Based on the steps described here: http://docs.openstack.org/develope
 
 ## To run:
 To provision the VM, run:
-1. `vagrant up`
+ 1. `vagrant up`
 
 To run automated tests:
-1. `vagrant ssh`
-1. `cd swift`
-1. `tox -e py27`
-1. `tox -e func`
+ 1. `vagrant ssh`
+ 1. `cd swift`
+ 1. `tox -e py27`
+ 1. `tox -e func`
 
 ## Todo:
 * Add Swift-on-File storage policy
-* remove need for `--ask-sudo-pass`
 * Add ability to provide gerrit ssh keys and setup `git review`
 
