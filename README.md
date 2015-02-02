@@ -1,8 +1,8 @@
 SAIO Ansible playbook
 =========
 
-An Ansible playbook for provisioning a swift all-in-one development environment
-on Fedora. Based on the steps described here: http://docs.openstack.org/developer/swift/development_saio.html
+An Ansible playbook for provisioning a [Swift](http://docs.openstack.org/developer/swift/development_saio.html) and [Swift-on-File](https://github.com/stackforge/swiftonfile/blob/master/doc/markdown/quick_start_guide.md) all-in-one
+development environment on Fedora.
 
 ## To run:
 To provision the VM, run:
@@ -10,9 +10,9 @@ To provision the VM, run:
 
 To run automated tests:
  1. `vagrant ssh`
- 1. `cd swift`
+ 1. `cd swiftonfile`
  1. `tox -e py27`
- 1. `tox -e func`
+ 1. `tox -e functest`
 
 ### Running ansible only:
 In case you already have a VM created and just wants to execute the ansible playbook, run the following command:
@@ -23,6 +23,5 @@ In case you already have a VM created and just wants to execute the ansible play
  * If testing on RHEL/CentOS, enable EPEL repository first.
 
 ## Todo:
-* Add Swift-on-File storage policy
 * Add ability to provide gerrit ssh keys and setup `git review`
 

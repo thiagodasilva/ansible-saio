@@ -50,7 +50,7 @@
 
   - name: create mount path /mnt/sdb1
     file: path=/mnt/sdb1 state=directory
-    
+
   - name: mount /mnt/sdb1
     mount: name=/mnt/sdb1 src=/srv/swift-disk fstype=xfs opts="loop,noatime,nodiratime,nobarrier,logbufs=8" dump=0 passno=0 state=mounted
 
@@ -191,6 +191,9 @@
 
   - name: remake rings
     command: /home/{{ username }}/bin/remakerings
+
+  - name: start swiftonfile setup
+    include: swiftonfile.yml
 
   - name: start swift
     sudo: no

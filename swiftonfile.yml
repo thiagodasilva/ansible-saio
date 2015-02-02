@@ -1,0 +1,43 @@
+  - name: create swiftonfile loopback device 
+    command: truncate -s 1GB /srv/sof-disk creates=/srv/sof-disk
+
+  - name: create filesystem /srv/sof-disk
+    sudo: yes
+    filesystem: fstype=xfs dev=/srv/sof-disk
+
+  - name: create mount path /mnt/swiftonfile
+    file: path=/mnt/swiftonfile state=directory
+
+  - name: mount /mnt/swiftonfile
+    mount: name=/mnt/swiftonfile src=/srv/sof-disk fstype=xfs opts="loop,noatime,nodiratime,nobarrier,logbufs=8" dump=0 passno=0 state=mounted
+
+  - name: set correct ownership of /mnt/swiftonfile
+    file: path=/mnt/swiftonfile owner={{ username }} group={{ group }} recurse=yes
+
+  - name: create sof object server config from template
+    template: src=swiftonfile.conf.j2 dest=/etc/swift/object-server/5.conf owner={{ username }} group={{ group }} mode=0644
+
+  - name: add new swift.conf file with sof storage policy
+    template: src=swift.conf.j2 dest=/etc/swift/swift.conf owner={{ username }} group={{ group }} mode=0644
+
+  - name: create sof object ring creation script
+    template: src=sof_remakering.j2 dest=/home/{{ username }}/bin/sof_remakering owner={{ username }} group={{ group }} mode=0777
+
+  - name: remake sof object ring
+    command: /home/{{ username }}/bin/sof_remakering
+
+  - name: check if swiftonfile is already cloned
+    stat: path=/home/{{ username }}/swiftonfile
+    register: swiftonfile_cloned
+
+  - name: git clone swiftonfile
+    git: repo=https://github.com/stackforge/swiftonfile.git dest=/home/{{ username }}/swiftonfile
+    when: not swiftonfile_cloned.stat.exists
+
+  - name: build a development installation of swiftonfile
+    command: python setup.py develop chdir=/home/{{ username }}/swiftonfile
+
+  - name: set correct ownership of repos
+    file: path=/home/{{ username }}/{{ item }} owner={{ username }} group={{ group }} recurse=yes
+    with_items:
+      - swiftonfile
