@@ -23,5 +23,6 @@ In case you already have a VM created and just wants to execute the ansible play
  * If testing on RHEL/CentOS, enable EPEL repository first.
 
 ## Todo:
+* Add gluster volume
 * Add ability to provide gerrit ssh keys and setup `git review`
 
