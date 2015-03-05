@@ -1,0 +1,191 @@
+  - name: installing dependencies
+    yum: name={{ item }} state=present
+    with_items:
+      - curl
+      - gcc
+      - memcached
+      - rsync
+      - sqlite
+      - xfsprogs
+      - git
+      - git-core
+      - libffi-devel
+      - xinetd
+      - python-setuptools
+      - python-coverage
+      - python-devel
+      - python-nose
+      - python-simplejson 
+      - pyxattr
+      - python-eventlet
+      - python-greenlet
+      - python-paste-deploy
+      - python-netifaces
+      - python-pip
+      - python-dns
+      - python-mock
+
+  - name: install python modules with pip
+    pip: name={{ item }} state=present
+    with_items:
+      - tox
+      - nose
+      - xattr
+
+  - name: assure /srv directory exists
+    file: path=/srv state=directory
+
+  - name: create loopback device 
+    command: truncate -s 1GB /srv/swift-disk creates=/srv/swift-disk
+
+  - name: create filesystem /srv/swift-disk
+    sudo: yes
+    filesystem: fstype=xfs dev=/srv/swift-disk
+
+  - name: create mount path /mnt/sdb1
+    file: path=/mnt/sdb1 state=directory
+
+  - name: mount /mnt/sdb1
+    mount: name=/mnt/sdb1 src=/srv/swift-disk fstype=xfs opts="loop,noatime,nodiratime,nobarrier,logbufs=8" dump=0 passno=0 state=mounted
+
+  - name: create sub-partitions
+    file: >
+      path=/mnt/sdb1/{{ item }}
+      state=directory
+      owner={{ username }}
+      group={{ group }}
+    with_items:
+      - 1
+      - 2
+      - 3
+      - 4
+
+  - name: create symlinks
+    sudo: yes
+    file: >
+      src=/mnt/sdb1/{{ item }}
+      dest=/srv/{{ item }}
+      owner={{ username }}
+      group={{ group }}
+      state=link
+    with_items:
+      - 1
+      - 2
+      - 3
+      - 4
+
+  - name: create node partition directories
+    file: >
+      path=/srv/{{ item }}/node/sdb{{ item }}
+      owner={{ username }}
+      group={{ group }}
+      state=directory
+    with_items:
+      - 1
+      - 2
+      - 3
+      - 4
+
+  - name: create /var/run/swift
+    file: >
+      path=/var/run/swift
+      owner={{ username }}
+      group={{ group }}
+      state=directory
+
+  - name: create rc.local from template
+    template: src=rc.local.j2 dest=/etc/rc.d/rc.local owner=root group=root mode=0755
+
+  - name: check if swift is already cloned
+    stat: path=/home/{{ username }}/swift
+    register: swift_cloned
+
+  - name: git clone swift
+    git: repo=https://github.com/openstack/swift.git dest=/home/{{ username }}/swift
+    when: not swift_cloned.stat.exists
+
+  - name: build a development installation of swift
+    command: python setup.py develop chdir=/home/{{ username }}/swift
+     
+  - name: install swift's test dependencies
+    pip: requirements=/home/{{ username }}/swift/test-requirements.txt
+
+  - name: check if python-swiftclient is already cloned
+    stat: path=/home/{{ username }}/python-swiftclient
+    register: swiftclient_cloned
+
+  - name: git clone swift
+    git: repo=https://github.com/openstack/python-swiftclient.git dest=/home/{{ username }}/python-swiftclient
+    when: not swiftclient_cloned.stat.exists
+
+  - name: build a development installation of python-swiftclient
+    command: python setup.py develop chdir=/home/{{ username }}/python-swiftclient
+        
+  - name: set correct ownership of repos
+    file: path=/home/{{ username }}/{{ item }} owner={{ username }} group={{ group }} recurse=yes
+    with_items:
+      - swift
+      - python-swiftclient
+
+  - name: create /etc/rsyncd.conf
+    command: cp /home/{{ username }}/swift/doc/saio/rsyncd.conf /etc/
+
+  - name: update rsyncd.conf with correct username
+    replace: dest=/etc/rsyncd.conf regexp=<your-user-name> replace={{ username }}
+
+  - name: enable rsync
+    lineinfile: dest=/etc/xinetd.d/rsync line="disable = no" create=yes
+
+  - name: set selinux to permissive
+    selinux: policy=targeted state=permissive
+
+  - name: restart rsync
+    service: name=rsyncd state=restarted
+
+  - name: start memcache
+    service: name=memcached state=started enabled=yes
+
+  - name: clean up /etc/swift directory
+    file: path=/etc/swift state=absent
+
+  - name: create clean /etc/swift
+    command: cp -r /home/{{ username }}/swift/doc/saio/swift /etc/swift
+
+  - name: copy the sample configuration files for running tests
+    command: cp -r /home/{{ username }}/swift/test/sample.conf /etc/swift/test.conf
+
+  - name: set correct ownership of /etc/swift
+    file: path=/etc/swift owner={{ username }} group={{ group }} recurse=yes
+
+  - name: find config files to modify user option
+    raw: find /etc/swift/ -name \*.conf
+    register: conf_files
+
+  - name: replace user name
+    replace: dest={{ item }} regexp=<your-user-name> replace={{ username }} 
+    with_items: conf_files.stdout_lines
+
+  - name: copy the SAIO scripts for resetting the environment
+    command: cp -r /home/{{ username }}/swift/doc/saio/bin /home/{{ username }}/bin creates=/home/{{ username }}/bin
+
+  - name: set the correct file mode for SAIO scripts
+    file: dest=/home/{{ username }}/bin mode=0777 recurse=yes
+
+  - name: add new env. variable for loopback device
+    lineinfile: dest=/home/{{ username }}/.bashrc line="export SAIO_BLOCK_DEVICE=/srv/swift-disk"
+
+  - name: remove line from resetswift
+    lineinfile: dest=/home/{{ username }}/bin/resetswift line="sudo find /var/log/swift -type f -exec rm -f {} \;" state=absent
+
+  - name: add new env. variable for running tests
+    lineinfile: dest=/home/{{ username }}/.bashrc line="export SWIFT_TEST_CONFIG_FILE=/etc/swift/test.conf"
+
+  - name: make sure PATH includes the bin directory
+    lineinfile: dest=/home/{{ username }}/.bashrc line="export PATH=${PATH}:$HOME/bin"
+
+  - name: remake rings
+    command: /home/{{ username }}/bin/remakerings
+
+  - name: start swift
+    sudo: no
+    command: /home/{{ username }}/bin/startmain
