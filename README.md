@@ -14,7 +14,7 @@ To run automated tests:
  1. `tox -e py27`
  1. `tox -e functest`
 
-## Configuration Options
+### Configuration Options:
 You can set a few options to change how the VM is provisioned. In `global_vars.yml`, you can set if you want Swift-on-File configured or not and what storage policy should be set as the default.
 
 ### Running ansible only:
@@ -28,4 +28,5 @@ In case you already have a VM created and just wants to execute the Ansible play
 ## Todo:
 * Add gluster volume
 * Add ability to provide gerrit ssh keys and setup `git review`
+* add EC Storage policy support
 
