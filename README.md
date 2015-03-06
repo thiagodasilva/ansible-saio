@@ -14,12 +14,15 @@ To run automated tests:
  1. `tox -e py27`
  1. `tox -e functest`
 
+## Configuration Options
+You can set a few options to change how the VM is provisioned. In `global_vars.yml`, you can set if you want Swift-on-File configured or not and what storage policy should be set as the default.
+
 ### Running ansible only:
-In case you already have a VM created and just wants to execute the ansible playbook, run the following command:
+In case you already have a VM created and just wants to execute the Ansible playbook, run the following command:
  1. `ansible-playbook site.yml -i "192.168.56.103," --ask-sudo-pass`
 
 ####Notes: 
- * Make sure to update to the correct IP address on the command above (it's important to keep the comma ',' at the end) and the `username` and `group` variables in `site.yml`
+ * Make sure to update to the correct IP address on the command above (it's important to keep the comma ',' at the end) and the `username` and `group` variables in `global_vars.yml`
  * If testing on RHEL/CentOS, enable EPEL repository first.
 
 ## Todo:

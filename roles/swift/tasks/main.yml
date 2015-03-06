@@ -185,7 +185,3 @@
 
   - name: remake rings
     command: /home/{{ username }}/bin/remakerings
-
-  - name: start swift
-    sudo: no
-    command: /home/{{ username }}/bin/startmain

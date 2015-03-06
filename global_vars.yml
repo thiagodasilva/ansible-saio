@@ -1,0 +1,9 @@
+---
+username: "vagrant"
+group: "vagrant"
+
+#configure_swiftonfile: yes|no
+configure_swiftonfile: no
+
+#default_storage_policy: gold|silver|swiftonfile
+default_storage_policy: silver

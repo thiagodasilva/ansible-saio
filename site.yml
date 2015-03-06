@@ -1,8 +1,8 @@
 - hosts: all
   sudo: True
-  vars:
-    username: "vagrant"
-    group: "vagrant"
+  vars_files:
+    - "global_vars.yml"
   roles:
     - swift
-    - swiftonfile
+    - {role: swiftonfile, when: "{{ configure_swiftonfile }}" }
+    - post_config
