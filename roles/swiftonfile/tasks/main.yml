@@ -41,11 +41,3 @@
     file: path=/home/{{ username }}/{{ item }} owner={{ username }} group={{ group }} recurse=yes
     with_items:
       - swiftonfile
-
-  - name: reset swift
-    sudo: no
-    command: /home/{{ username }}/bin/resetswift
-
-  - name: start swift
-    sudo: no
-    command: /home/{{ username }}/bin/startmain

@@ -1,0 +1,15 @@
+  - name: remove the current default storage policy
+    sudo: no
+    lineinfile: dest=/etc/swift/swift.conf regexp="default = yes" state=absent
+
+  - name: set the correct storage policy
+    sudo: no
+    lineinfile: dest=/etc/swift/swift.conf line="default = yes" state=present insertafter="^name = {{default_storage_policy|default(gold)}}"
+
+  - name: reset swift
+    sudo: no
+    command: /home/{{ username }}/bin/resetswift
+
+  - name: start swift
+    sudo: no
+    command: /home/{{ username }}/bin/startmain
