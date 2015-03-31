@@ -104,11 +104,14 @@
     git: repo=https://github.com/openstack/swift.git dest=/home/{{ username }}/swift
     when: not swift_cloned.stat.exists
 
-  - name: build a development installation of swift
-    command: python setup.py develop chdir=/home/{{ username }}/swift
-     
+  - name: install swift's dependencies
+    pip: requirements=/home/{{ username }}/swift/requirements.txt
+
   - name: install swift's test dependencies
     pip: requirements=/home/{{ username }}/swift/test-requirements.txt
+
+  - name: build a development installation of swift
+    command: python setup.py develop chdir=/home/{{ username }}/swift
 
   - name: check if python-swiftclient is already cloned
     stat: path=/home/{{ username }}/python-swiftclient
