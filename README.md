@@ -2,7 +2,7 @@ SAIO Ansible playbook
 =========
 
 An Ansible playbook for provisioning a [Swift](http://docs.openstack.org/developer/swift/development_saio.html) and [Swift-on-File](https://github.com/stackforge/swiftonfile/blob/master/doc/markdown/quick_start_guide.md) all-in-one
-development environment on Fedora.
+development environment on Fedora (default) or CentOS.
 
 ## To run:
 To provision the VM, run:
@@ -15,7 +15,7 @@ To run automated tests:
  1. `tox -e functest`
 
 ### Configuration Options:
-You can set a few options to change how the VM is provisioned. In `global_vars.yml`, you can set if you want Swift-on-File configured or not and what storage policy should be set as the default.
+You can set a few options to change how the VM is provisioned. In `global_vars.yml`, you can set if you want Swift-on-File configured or not and what storage policy should be set as the default. In the `Vagrantfile`, you can choose to provision either a Fedora VM or a CentOS-7 VM.
 
 ### Running ansible only:
 In case you already have a VM created and just wants to execute the Ansible playbook, run the following command:
