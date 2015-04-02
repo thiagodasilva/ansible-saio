@@ -1,0 +1,6 @@
+  - name: copy ssh private key
+    sudo: no
+    copy: src={{ private_key_local_filepath }} dest=/home/{{ username }}/.ssh/{{ private_key_filename }} owner={{ username }} group={{ group }} mode=0600
+
+  - name: create rc.local from template
+    template: src=config.j2 dest=/home/{{ username }}/.ssh/config owner={{ username}} group={{ group }} mode=0600

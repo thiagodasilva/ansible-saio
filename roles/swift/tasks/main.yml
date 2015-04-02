@@ -35,6 +35,7 @@
       - tox
       - nose
       - xattr
+      - git-review
 
   - name: assure /srv directory exists
     file: path=/srv state=directory
@@ -107,6 +108,11 @@
   - name: git clone swift
     git: repo=https://github.com/openstack/swift.git dest=/home/{{ username }}/swift
     when: not swift_cloned.stat.exists
+
+  - name: add gerrit repo to swift clone
+    #git: repo=ssh://{{ openstack_username }}@review.openstack.org:29418/openstack/swift.git dest=/home/{{ username }}/swift remote=gerrit accept_hostkey=True
+    command: git remote add gerrit ssh://{{ openstack_username }}@review.openstack.org:29418/openstack/swift.git chdir=/home/{{ username }}/swift
+    when: configure_gerrit and not swift_cloned.stat.exists
 
   - name: install swift's dependencies
     pip: requirements=/home/{{ username }}/swift/requirements.txt

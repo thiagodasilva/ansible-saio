@@ -34,6 +34,11 @@
     git: repo=https://github.com/stackforge/swiftonfile.git dest=/home/{{ username }}/swiftonfile
     when: not swiftonfile_cloned.stat.exists
 
+  - name: add gerrit repo to swiftonfile clone
+    #git: repo=ssh://{{ openstack_username }}@review.openstack.org:29418/openstack/swift.git dest=/home/{{ username }}/swift remote=gerrit accept_hostkey=True
+    command: git remote add gerrit ssh://{{ openstack_username }}@review.openstack.org:29418/stackforge/swiftonfile.git chdir=/home/{{ username }}/swiftonfile
+    when: configure_gerrit and not swiftonfile_cloned.stat.exists
+
   - name: build a development installation of swiftonfile
     command: python setup.py develop chdir=/home/{{ username }}/swiftonfile
 

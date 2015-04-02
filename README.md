@@ -17,6 +17,9 @@ To run automated tests:
 ### Configuration Options:
 You can set a few options to change how the VM is provisioned. In `global_vars.yml`, you can set if you want Swift-on-File configured or not and what storage policy should be set as the default. In the `Vagrantfile`, you can choose to provision either a Fedora VM or a CentOS-7 VM.
 
+#### Gerrit repo setup
+In case you would like to use the provisioned VM as your development environment, ansible can add the gerrit as a remote repo to both Swift and Swift-on-File. Checkout the options in `global_vars.yml`
+
 ### Running ansible only:
 In case you already have a VM created and just wants to execute the Ansible playbook, run the following command:
  1. `ansible-playbook site.yml -i "192.168.56.103," --ask-sudo-pass`
@@ -27,6 +30,5 @@ In case you already have a VM created and just wants to execute the Ansible play
 
 ## Todo:
 * Add gluster volume
-* Add ability to provide gerrit ssh keys and setup `git review`
 * add EC Storage policy support
 

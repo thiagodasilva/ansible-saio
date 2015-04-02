@@ -2,8 +2,14 @@
 username: "vagrant"
 group: "vagrant"
 
+# configure gerrit repo to do reviews
+configure_gerrit: no
+#openstack_username: <your_openstack_gerrit_username>
+#private_key_filename: <your_ssh_private_key_filename>
+#private_key_local_filepath: <path_to_local_ssh_private_key>
+
 #configure_swiftonfile: yes|no
 configure_swiftonfile: no
 
 #default_storage_policy: gold|silver|swiftonfile
-default_storage_policy: silver
+default_storage_policy: gold

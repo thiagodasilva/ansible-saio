@@ -3,6 +3,7 @@
   vars_files:
     - "global_vars.yml"
   roles:
+    - {role: pre_config, when: "{{ configure_gerrit }}" }
     - swift
     - {role: swiftonfile, when: "{{ configure_swiftonfile }}" }
     - post_config
