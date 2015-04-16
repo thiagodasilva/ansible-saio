@@ -30,5 +30,3 @@ In case you already have a VM created and just wants to execute the Ansible play
 
 ## Todo:
 * Add gluster volume
-* add EC Storage policy support
-
