@@ -81,15 +81,13 @@
 
   - name: create node partition directories
     file: >
-      path=/srv/{{ item }}/node/sdb{{ item }}
+      path=/srv/{{ item[1] }}/node/sdb{{ item[0] + item[1] }}
       owner={{ username }}
       group={{ group }}
       state=directory
-    with_items:
-      - 1
-      - 2
-      - 3
-      - 4
+    with_nested:
+      - [0, 4]
+      - [1, 2, 3, 4]
 
   - name: create /var/run/swift
     file: >

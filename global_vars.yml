@@ -11,5 +11,5 @@ configure_gerrit: no
 #configure_swiftonfile: yes|no
 configure_swiftonfile: no
 
-#default_storage_policy: gold|silver|swiftonfile
+#default_storage_policy: gold|silver|ec42|swiftonfile
 default_storage_policy: gold

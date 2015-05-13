@@ -31,7 +31,7 @@
     register: swiftonfile_cloned
 
   - name: git clone swiftonfile
-    git: repo=https://github.com/stackforge/swiftonfile.git dest=/home/{{ username }}/swiftonfile
+    git: repo=https://github.com/stackforge/swiftonfile.git dest=/home/{{ username }}/swiftonfile accept_hostkey=yes
     when: not swiftonfile_cloned.stat.exists
 
   - name: add gerrit repo to swiftonfile clone

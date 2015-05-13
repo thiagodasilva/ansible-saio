@@ -1,6 +1,6 @@
 Vagrant.configure(2) do |config|
-  #config.vm.box = "chef/centos-7.0"
-  config.vm.box = "chef/fedora-20"
+  config.vm.box = "chef/centos-7.0"
+  #config.vm.box = "chef/fedora-20"
   VMS = 1
   (0..VMS-1).each do |vm|
     config.vm.define "server#{vm}" do |g|
