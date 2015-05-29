@@ -6,7 +6,7 @@ development environment on Fedora or CentOS(default).
 
 ## To run:
 To provision the VM, run:
- 1. `vagrant up`
+ 1. `vagrant up --provider=virtualbox` 
 
 To run automated tests:
  1. `vagrant ssh`
