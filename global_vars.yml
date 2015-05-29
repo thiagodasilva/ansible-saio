@@ -9,7 +9,7 @@ configure_gerrit: no
 #private_key_local_filepath: <path_to_local_ssh_private_key>
 
 #configure_swiftonfile: yes|no
-configure_swiftonfile: no
+configure_swiftonfile: yes
 
 #default_storage_policy: gold|silver|ec42|swiftonfile
 default_storage_policy: gold
