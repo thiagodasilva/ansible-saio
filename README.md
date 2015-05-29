@@ -12,7 +12,7 @@ To run automated tests:
  1. `vagrant ssh`
  1. `cd swift`
  1. `tox -e py27`
- 1. `tox -e functest`
+ 1. `tox -e func`
 
 ### Configuration Options:
 You can set a few options to change how the VM is provisioned. In `global_vars.yml`, you can set if you want Swift-on-File configured or not and what storage policy should be set as the default. In the `Vagrantfile`, you can choose to provision either a Fedora VM or a CentOS-7 VM.
