@@ -10,7 +10,7 @@ To provision the VM, run:
 
 To run automated tests:
  1. `vagrant ssh`
- 1. `cd swift`
+ 1. `cd /vagrant/source/swift`
  1. `tox -e py27`
  1. `tox -e func`
 
