@@ -99,47 +99,50 @@
   - name: create rc.local from template
     template: src=rc.local.j2 dest=/etc/rc.d/rc.local owner=root group=root mode=0755
 
+  - name: assure /vagrant/source directory exists
+    file: path={{ source_dir }} state=directory
+
   - name: check if swift is already cloned
-    stat: path=/home/{{ username }}/swift
+    stat: path={{ source_dir }}/swift
     register: swift_cloned
 
   - name: git clone swift
-    git: repo=https://github.com/openstack/swift.git dest=/home/{{ username }}/swift
+    git: repo=https://github.com/openstack/swift.git dest={{ source_dir }}/swift
     when: not swift_cloned.stat.exists
 
   - name: add gerrit repo to swift clone
     #git: repo=ssh://{{ openstack_username }}@review.openstack.org:29418/openstack/swift.git dest=/home/{{ username }}/swift remote=gerrit accept_hostkey=True
-    command: git remote add gerrit ssh://{{ openstack_username }}@review.openstack.org:29418/openstack/swift.git chdir=/home/{{ username }}/swift
+    command: git remote add gerrit ssh://{{ openstack_username }}@review.openstack.org:29418/openstack/swift.git chdir={{ source_dir }}/swift
     when: configure_gerrit and not swift_cloned.stat.exists
 
   - name: install swift's dependencies
-    pip: requirements=/home/{{ username }}/swift/requirements.txt
+    pip: requirements={{ source_dir }}/swift/requirements.txt
 
   - name: install swift's test dependencies
-    pip: requirements=/home/{{ username }}/swift/test-requirements.txt
+    pip: requirements={{ source_dir }}/swift/test-requirements.txt
 
   - name: build a development installation of swift
-    command: python setup.py develop chdir=/home/{{ username }}/swift
+    command: python setup.py develop chdir={{ source_dir }}/swift
 
   - name: check if python-swiftclient is already cloned
-    stat: path=/home/{{ username }}/python-swiftclient
+    stat: path={{ source_dir }}/python-swiftclient
     register: swiftclient_cloned
 
-  - name: git clone swift
-    git: repo=https://github.com/openstack/python-swiftclient.git dest=/home/{{ username }}/python-swiftclient
+  - name: git clone python-swiftclient
+    git: repo=https://github.com/openstack/python-swiftclient.git dest={{ source_dir }}/python-swiftclient
     when: not swiftclient_cloned.stat.exists
 
   - name: build a development installation of python-swiftclient
-    command: python setup.py develop chdir=/home/{{ username }}/python-swiftclient
+    command: python setup.py develop chdir={{ source_dir }}/python-swiftclient
         
   - name: set correct ownership of repos
-    file: path=/home/{{ username }}/{{ item }} owner={{ username }} group={{ group }} recurse=yes
+    file: path={{ source_dir }}/{{ item }} owner={{ username }} group={{ group }} recurse=yes
     with_items:
       - swift
       - python-swiftclient
 
   - name: create /etc/rsyncd.conf
-    command: cp /home/{{ username }}/swift/doc/saio/rsyncd.conf /etc/
+    command: cp {{ source_dir }}/swift/doc/saio/rsyncd.conf /etc/
 
   - name: update rsyncd.conf with correct username
     replace: dest=/etc/rsyncd.conf regexp=<your-user-name> replace={{ username }}
@@ -148,7 +151,7 @@
     lineinfile: dest=/etc/xinetd.d/rsync line="disable = no" create=yes
 
   - name: set selinux to permissive
-    selinux: policy=targeted state=permissive
+    selinux: policy=targeted state=disabled
 
   - name: restart rsync
     service: name=rsyncd state=restarted
@@ -160,10 +163,10 @@
     file: path=/etc/swift state=absent
 
   - name: create clean /etc/swift
-    command: cp -r /home/{{ username }}/swift/doc/saio/swift /etc/swift
+    command: cp -r {{ source_dir }}/swift/doc/saio/swift /etc/swift
 
   - name: copy the sample configuration files for running tests
-    command: cp -r /home/{{ username }}/swift/test/sample.conf /etc/swift/test.conf
+    command: cp -r {{ source_dir }}/swift/test/sample.conf /etc/swift/test.conf
 
   - name: set correct ownership of /etc/swift
     file: path=/etc/swift owner={{ username }} group={{ group }} recurse=yes
@@ -177,7 +180,7 @@
     with_items: conf_files.stdout_lines
 
   - name: copy the SAIO scripts for resetting the environment
-    command: cp -r /home/{{ username }}/swift/doc/saio/bin /home/{{ username }}/bin creates=/home/{{ username }}/bin
+    command: cp -r {{ source_dir }}/swift/doc/saio/bin /home/{{ username }}/bin creates=/home/{{ username }}/bin
 
   - name: set the correct file mode for SAIO scripts
     file: dest=/home/{{ username }}/bin mode=0777 recurse=yes
@@ -192,7 +195,7 @@
     lineinfile: dest=/home/{{ username }}/.bashrc line="export SWIFT_TEST_CONFIG_FILE=/etc/swift/test.conf"
 
   - name: make sure PATH includes the bin directory
-    lineinfile: dest=/home/{{ username }}/.bashrc line="export PATH=${PATH}:$HOME/bin"
+    lineinfile: dest=/home/{{ username }}/.bashrc line="export PATH=${PATH}:/home/{{ username }}/bin"
 
   - name: remake rings
     command: /home/{{ username }}/bin/remakerings

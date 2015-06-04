@@ -1,6 +1,7 @@
 ---
 username: "vagrant"
 group: "vagrant"
+source_dir: "/vagrant/source"
 
 # configure gerrit repo to do reviews
 configure_gerrit: no
