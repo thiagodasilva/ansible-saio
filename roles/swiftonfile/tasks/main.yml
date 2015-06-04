@@ -27,22 +27,22 @@
     command: /home/{{ username }}/bin/sof_remakering
 
   - name: check if swiftonfile is already cloned
-    stat: path=/home/{{ username }}/swiftonfile
+    stat: path={{ source_dir }}/swiftonfile
     register: swiftonfile_cloned
 
   - name: git clone swiftonfile
-    git: repo=https://github.com/stackforge/swiftonfile.git dest=/home/{{ username }}/swiftonfile accept_hostkey=yes
+    git: repo=https://github.com/stackforge/swiftonfile.git dest={{ source_dir }}/swiftonfile accept_hostkey=yes
     when: not swiftonfile_cloned.stat.exists
 
   - name: add gerrit repo to swiftonfile clone
     #git: repo=ssh://{{ openstack_username }}@review.openstack.org:29418/openstack/swift.git dest=/home/{{ username }}/swift remote=gerrit accept_hostkey=True
-    command: git remote add gerrit ssh://{{ openstack_username }}@review.openstack.org:29418/stackforge/swiftonfile.git chdir=/home/{{ username }}/swiftonfile
+    command: git remote add gerrit ssh://{{ openstack_username }}@review.openstack.org:29418/stackforge/swiftonfile.git chdir={{ source_dir }}/swiftonfile
     when: configure_gerrit and not swiftonfile_cloned.stat.exists
 
   - name: build a development installation of swiftonfile
-    command: python setup.py develop chdir=/home/{{ username }}/swiftonfile
+    command: python setup.py develop chdir={{ source_dir }}/swiftonfile
 
   - name: set correct ownership of repos
-    file: path=/home/{{ username }}/{{ item }} owner={{ username }} group={{ group }} recurse=yes
+    file: path={{ source_dir }}/{{ item }} owner={{ username }} group={{ group }} recurse=yes
     with_items:
       - swiftonfile
