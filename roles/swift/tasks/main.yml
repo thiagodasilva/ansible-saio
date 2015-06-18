@@ -28,6 +28,8 @@
       - python-pip
       - python-dns
       - python-mock
+      - tree
+      - vim
 
   - name: install python modules with pip
     pip: name={{ item }} state=present
