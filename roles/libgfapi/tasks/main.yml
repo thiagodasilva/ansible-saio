@@ -1,0 +1,12 @@
+- name: check if libgfapi is already cloned
+  stat: path={{ source_dir }}/libgfapi
+  register: libgfapi_cloned
+
+- name: git clone libgfapi
+  git: repo=https://github.com/gluster/libgfapi-python.git dest={{ source_dir }}/libgfapi
+  when: not libgfapi_cloned.stat.exists
+
+- name: download and install libgfapi
+  command: "{{ item }} chdir={{ source_dir }}/libgfapi"
+  with_items:
+    - python setup.py install

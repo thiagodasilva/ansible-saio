@@ -29,7 +29,6 @@
       - python-dns
       - python-mock
       - tree
-      - vim
 
   - name: install python modules with pip
     pip: name={{ item }} state=present
@@ -109,7 +108,7 @@
     register: swift_cloned
 
   - name: git clone swift
-    git: repo=https://github.com/openstack/swift.git dest={{ source_dir }}/swift
+    git: repo=https://github.com/openstack/swift.git dest={{ source_dir }}/swift version=tags/2.3.0 update=no
     when: not swift_cloned.stat.exists
 
   - name: add gerrit repo to swift clone
@@ -201,3 +200,5 @@
 
   - name: remake rings
     command: /home/{{ username }}/bin/remakerings
+    
+

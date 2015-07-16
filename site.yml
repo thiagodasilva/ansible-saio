@@ -6,4 +6,7 @@
 #- {role: pre_config, when: "{{ configure_gerrit }}" }
     - swift
     - {role: swiftonfile, when: "{{ configure_swiftonfile }}" }
+    - {role: gluster, when: "{{ configure_gluster }}"}
+    - {role: libgfapi, when: "{{ configure_libgfapi }}"}
     - post_config
+

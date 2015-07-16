@@ -1,0 +1,38 @@
+- name: install gluster
+  sudo: yes
+  yum: name={{ item }} state=present
+  with_items:
+    - glusterfs
+    - glusterfs-server
+
+- name: update /etc/hosts file
+  sudo: yes
+  lineinfile: dest=/etc/hosts state=present line="192.168.56.130 server0"
+
+- name: start gluster
+  sudo: yes
+  command: "{{ item }} chdir={{ source_dir }}"
+  with_items:
+    - service glusterd start
+    - chkconfig glusterd on
+
+- name: set up gluster test volume
+  sudo: yes
+  command: "{{ item }} chdir={{ source_dir }}"
+  with_items:
+    - mkdir -p /data/brick/b1
+    - gluster volume create volume1 server0:/data/brick/b1 force
+    - gluster volume start volume1
+    - mount -t glusterfs server0:/volume1 /mnt/swiftonfile
+
+- name: gluster allow insecure rpc
+  sudo: yes
+  lineinfile: dest=/etc/glusterfs/glusterd.vol insertbefore="^end-volume" line="    option rpc-auth-allow-insecure on"
+
+- name: gluster allow insecure on
+  sudo: yes
+  command: "{{ item }} chdir={{ source_dir }}"
+  with_items:
+    - gluster volume set volume1 allow-insecure on
+    - service glusterd stop
+    - service glusterd start

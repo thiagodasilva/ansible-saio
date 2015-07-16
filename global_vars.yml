@@ -5,12 +5,18 @@ source_dir: "/vagrant/source"
 
 # configure gerrit repo to do reviews
 configure_gerrit: no
-#openstack_username: <your_openstack_gerrit_username>
+#openstack_username: 
 #private_key_filename: <your_ssh_private_key_filename>
 #private_key_local_filepath: <path_to_local_ssh_private_key>
 
 #configure_swiftonfile: yes|no
-configure_swiftonfile: no
+configure_swiftonfile: yes
+
+#configure gluster test volume: yes|no
+configure_gluster: yes
+
+#libgfapi: yes|no
+configure_libgfapi: yes
 
 #default_storage_policy: gold|silver|ec42|swiftonfile
-default_storage_policy: gold
+default_storage_policy: swiftonfile
