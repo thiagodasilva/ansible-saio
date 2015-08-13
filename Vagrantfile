@@ -6,7 +6,10 @@ Vagrant.configure(2) do |config|
     config.vm.define "server#{vm}" do |g|
         g.vm.hostname = "server#{vm}"
         g.vm.network :private_network, ip: "192.168.56.13#{vm}"
-
+        g.vm.provider :virtualbox do |vb|
+            vb.memory = 2048
+            vb.cpus = 2
+        end
         if vm == (VMS-1)
             g.vm.provision :ansible do |ansible|
                 ansible.playbook = "site.yml"
