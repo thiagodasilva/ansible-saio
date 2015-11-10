@@ -16,14 +16,11 @@
       - libffi-devel
       - xinetd
       - python-setuptools
-      - python-coverage
       - python-devel
-      - python-nose
       - python-simplejson 
       - pyxattr
       - python-eventlet
       - python-greenlet
-      - python-paste-deploy
       - python-netifaces
       - python-pip
       - python-dns
@@ -32,12 +29,16 @@
       - vim
 
   - name: install python modules with pip
-    pip: name={{ item }} state=present
+    pip: name={{ item }} state=present extra_args='--upgrade'
     with_items:
       - tox
       - nose
       - xattr
       - git-review
+      - coverage
+      - Paste
+      - pyudev
+      - pip
 
   - name: assure /srv directory exists
     file: path=/srv state=directory
