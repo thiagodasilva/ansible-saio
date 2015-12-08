@@ -1,7 +1,7 @@
 SAIO Ansible playbook
 =========
 
-An Ansible playbook for provisioning a [Swift](http://docs.openstack.org/developer/swift/development_saio.html) and [Swift-on-File](https://github.com/stackforge/swiftonfile/blob/master/doc/markdown/quick_start_guide.md) all-in-one
+An Ansible playbook for provisioning a [Swift](http://docs.openstack.org/developer/swift/development_saio.html) and [Swift-on-File](https://github.com/openstack/swiftonfile/blob/master/doc/markdown/quick_start_guide.md) all-in-one
 development environment on Fedora or CentOS(default).
 
 ## To run:
