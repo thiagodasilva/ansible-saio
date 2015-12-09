@@ -200,5 +200,13 @@
   - name: make sure PATH includes the bin directory
     lineinfile: dest=/home/{{ username }}/.bashrc line="export PATH=${PATH}:/home/{{ username }}/bin"
 
+  # the next two tasks should be temporary fixes
+  - name: add new env. variable for finding liberasurecode lib 
+    lineinfile: dest=/home/{{ username }}/.bashrc line="export LD_LIBRARY_PATH=/usr/local/lib"
+
+  - name: add new swift.conf file with correct ec library
+    template: src=swift.conf.j2 dest=/etc/swift/swift.conf owner={{ username }} group={{ group }} mode=0644
+  # end temp fix here
+
   - name: remake rings
     command: /home/{{ username }}/bin/remakerings

@@ -2,6 +2,8 @@
   sudo: True
   vars_files:
     - "global_vars.yml"
+  environment:
+    LD_LIBRARY_PATH: /usr/local/lib
   roles:
 #- {role: pre_config, when: "{{ configure_gerrit }}" }
     - swift
