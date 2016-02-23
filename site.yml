@@ -6,6 +6,8 @@
     LD_LIBRARY_PATH: /usr/local/lib
   roles:
 #- {role: pre_config, when: "{{ configure_gerrit }}" }
+    - pre_config
+    - liberasurecode
     - swift
     - {role: swiftonfile, when: "{{ configure_swiftonfile }}" }
     - post_config

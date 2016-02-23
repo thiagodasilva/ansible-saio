@@ -1,6 +1,52 @@
-  - name: copy ssh private key
-    sudo: no
-    copy: src={{ private_key_local_filepath }} dest=/home/{{ username }}/.ssh/{{ private_key_filename }} owner={{ username }} group={{ group }} mode=0600
+#  - name: copy ssh private key
+#    sudo: no
+#    copy: src={{ private_key_local_filepath }} dest=/home/{{ username }}/.ssh/{{ private_key_filename }} owner={{ username }} group={{ group }} mode=0600
 
-  - name: create rc.local from template
-    template: src=config.j2 dest=/home/{{ username }}/.ssh/config owner={{ username}} group={{ group }} mode=0600
+#  - name: create rc.local from template
+#    template: src=config.j2 dest=/home/{{ username }}/.ssh/config owner={{ username}} group={{ group }} mode=0600
+
+  - name: install epel-release
+    yum: name=epel-release state=present
+    when: ansible_distribution in ['RedHat', 'CentOS']
+
+  - name: installing dependencies
+    yum: name={{ item }} state=present
+    with_items:
+      - curl
+      - gcc
+      - memcached
+      - rsync
+      - sqlite
+      - xfsprogs
+      - git
+      - git-core
+      - libffi-devel
+      - xinetd
+      - python-setuptools
+      - python-devel
+      - python-simplejson 
+      - pyxattr
+      - python-eventlet
+      - python-greenlet
+      - python-netifaces
+      - python-pip
+      - python-dns
+      - python-mock
+      - tree
+      - vim
+      - make
+      - autoconf
+      - automake
+      - libtool
+
+  - name: install python modules with pip
+    pip: name={{ item }} state=present extra_args='--upgrade'
+    with_items:
+      - tox
+      - nose
+      - xattr
+      - git-review
+      - coverage
+      - Paste
+      - pyudev
+      - pip
