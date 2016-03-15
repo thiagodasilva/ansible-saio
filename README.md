@@ -6,13 +6,26 @@ development environment on Fedora or CentOS(default).
 
 ## To run:
 To provision the VM, run:
- 1. `vagrant up --provider=virtualbox` 
+ 1. `vagrant up --provider=virtualbox`
 
 To run automated tests:
  1. `vagrant ssh`
  1. `cd /vagrant/source/swift`
- 1. `tox -e py27`
- 1. `tox -e func`
+ 1. `./.unittests`
+ 1. `./.functests`
+
+To quickly test installation:
+ 1. `swift stat`
+ 1. `echo 'hello world' > hw`
+ 1. `swift upload c1 hw`
+ 1. `swift list`
+
+To test installation with Swift-on-File (Note: make sure to have Swift-on-File provisioned):
+ 1. `swift post c2 -H 'X-Storage-Policy: swiftonfile'`
+ 1. `echo 'hello swiftonfile' > hs`
+ 1. `swift upload c2 hs`
+ 1. `swift list`
+ 1. `ls /mnt/swiftonfile`
 
 ### Configuration Options:
 You can set a few options to change how the VM is provisioned. In `global_vars.yml`, you can set if you want Swift-on-File configured or not and what storage policy should be set as the default. In the `Vagrantfile`, you can choose to provision either a Fedora VM or a CentOS-7 VM.
@@ -24,7 +37,7 @@ In case you would like to use the provisioned VM as your development environment
 In case you already have a VM created and just wants to execute the Ansible playbook, run the following command:
  1. `ansible-playbook site.yml -i "192.168.56.103," --ask-sudo-pass`
 
-####Notes: 
+####Notes:
  * Make sure to update to the correct IP address on the command above (it's important to keep the comma ',' at the end) and the `username` and `group` variables in `global_vars.yml`
  * If testing on RHEL/CentOS, enable EPEL repository first.
 
