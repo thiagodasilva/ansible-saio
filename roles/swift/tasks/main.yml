@@ -2,7 +2,7 @@
   - name: assure /srv directory exists
     file: path=/srv state=directory
 
-  - name: create loopback device 
+  - name: create loopback device
     command: truncate -s 1GB /srv/swift-disk creates=/srv/swift-disk
 
   - name: create filesystem /srv/swift-disk
@@ -96,7 +96,7 @@
 
   - name: build a development installation of python-swiftclient
     command: python setup.py develop chdir={{ source_dir }}/python-swiftclient
-        
+
   - name: set correct ownership of repos
     file: path={{ source_dir }}/{{ item }} owner={{ username }} group={{ group }} recurse=yes
     with_items:
@@ -138,7 +138,7 @@
     register: conf_files
 
   - name: replace user name
-    replace: dest={{ item }} regexp=<your-user-name> replace={{ username }} 
+    replace: dest={{ item }} regexp=<your-user-name> replace={{ username }}
     with_items: conf_files.stdout_lines
 
   - name: copy the SAIO scripts for resetting the environment
@@ -159,8 +159,17 @@
   - name: make sure PATH includes the bin directory
     lineinfile: dest=/home/{{ username }}/.bashrc line="export PATH=${PATH}:/home/{{ username }}/bin"
 
+  - name: add ST_AUTH swift client environment variables
+    lineinfile: dest=/home/{{ username }}/.bashrc line="export ST_AUTH=http://localhost:8080/auth/v1.0"
+
+  - name: add ST_USER swift client environment variables
+    lineinfile: dest=/home/{{ username }}/.bashrc line="export ST_USER=test:tester"
+
+  - name: add ST_KEY swift client environment variables
+    lineinfile: dest=/home/{{ username }}/.bashrc line="export ST_KEY=testing"
+
   # the next two tasks should be temporary fixes
-  - name: add new env. variable for finding liberasurecode lib 
+  - name: add new env. variable for finding liberasurecode lib
     lineinfile: dest=/home/{{ username }}/.bashrc line="export LD_LIBRARY_PATH=/usr/local/lib"
 
   - name: add new swift.conf file with correct ec library
