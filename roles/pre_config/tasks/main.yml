@@ -22,9 +22,8 @@
       - git-core
       - libffi-devel
       - xinetd
-      - python-setuptools
       - python-devel
-      - python-simplejson 
+      - python-simplejson
       - pyxattr
       - python-eventlet
       - python-greenlet
