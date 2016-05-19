@@ -14,3 +14,7 @@ configure_swiftonfile: no
 
 #default_storage_policy: gold|silver|ec42|swiftonfile
 default_storage_policy: gold
+
+configure_hummingbird: no
+golang_bin: https://storage.googleapis.com/golang/go1.6.2.linux-amd64.tar.gz
+gopath: /home/{{ username }}/go_work

@@ -1,0 +1,6 @@
+#!/bin/bash
+
+swift-init proxy start
+swift-init account start
+swift-init container start
+$GOPATH/src/github.com/openstack/swift/go/bin/hummingbird start object
