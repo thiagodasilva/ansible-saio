@@ -10,4 +10,5 @@
     - liberasurecode
     - swift
     - {role: swiftonfile, when: "{{ configure_swiftonfile }}" }
+    - {role: hummingbird, when: "{{ configure_hummingbird }}" }
     - post_config
