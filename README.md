@@ -31,7 +31,7 @@ To test installation with Swift-on-File (Note: make sure to have Swift-on-File p
 You can set a few options to change how the VM is provisioned. In `global_vars.yml`, you can set if you want Swift-on-File configured or not and what storage policy should be set as the default. In the `Vagrantfile`, you can choose to provision either a Fedora VM or a CentOS-7 VM.
 
 #### Hummingbird setup
-To test the hummingbird branch, set `configure_hummingbird` to `yes` before running `vagrant up`. Once vagrant is done provisioning, run the following:
+To test the hummingbird branch; in `global_vars.yml`, set `configure_hummingbird` to `yes` before running `vagrant up`. Once vagrant is done provisioning, run the following:
  1. `vagrant ssh`
  1. `cd go_work/src/github.com/openstack/swift/go`
  1. `make get test all`
