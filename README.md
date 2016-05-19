@@ -32,12 +32,12 @@ You can set a few options to change how the VM is provisioned. In `global_vars.y
 
 #### Hummingbird setup
 To test the hummingbird branch, set `configure_hummingbird` to `yes` before running `vagrant up`. Once vagrant is done provisioning, run the following:
-1. `vagrant ssh`
-1. `cd go_work/src/github.com/openstack/swift/go`
-1. `make get test all`
-1. `startmain`
-1. `swift upload c1 hw`
-1. `swift list`
+ 1. `vagrant ssh`
+ 1. `cd go_work/src/github.com/openstack/swift/go`
+ 1. `make get test all`
+ 1. `startmain`
+ 1. `swift upload c1 hw`
+ 1. `swift list`
 
 #### Gerrit repo setup
 In case you would like to use the provisioned VM as your development environment, Ansible can add gerrit as a remote repo to both Swift and Swift-on-File. Checkout the options in `global_vars.yml`
