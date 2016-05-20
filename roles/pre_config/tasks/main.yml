@@ -58,7 +58,8 @@
   - name: install golang from binary
     sudo: yes
     unarchive: src={{ golang_bin }} dest=/usr/local copy=no
-    when: not golang_installed.stat.exists
+    when: not golang_installed.stat.exists and configure_hummingbird
 
   - name: make sure PATH includes the go bin directory
     lineinfile: dest=/home/{{ username }}/.bashrc line="export PATH=${PATH}:/usr/local/go/bin"
+    when: configure_hummingbird
