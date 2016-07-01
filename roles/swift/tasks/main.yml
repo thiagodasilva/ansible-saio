@@ -116,7 +116,7 @@
     selinux: policy=targeted state=disabled
 
   - name: restart rsync
-    service: name=rsyncd state=restarted
+    service: name=rsyncd state=restarted enabled=yes
 
   - name: start memcache
     service: name=memcached state=started enabled=yes
