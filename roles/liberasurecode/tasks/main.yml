@@ -7,7 +7,7 @@
     register: liberasurecode_cloned
 
   - name: git clone liberasurecode
-    git: repo=https://bitbucket.org/tsg-/liberasurecode.git dest={{ source_dir }}/liberasurecode
+    git: repo=https://github.com/openstack/liberasurecode.git dest={{ source_dir }}/liberasurecode
     when: not liberasurecode_cloned.stat.exists
 
   - name: build liberasurecode - autogen
