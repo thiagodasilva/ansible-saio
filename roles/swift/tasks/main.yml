@@ -58,6 +58,24 @@
       group={{ group }}
       state=directory
 
+  - name: create /var/cache/swift
+    file: >
+      path=/var/cache/swift
+      owner={{ username }}
+      group={{ group }}
+      state=directory
+
+  - name: create /var/cache/swift[n]
+    file: >
+      path=/var/cache/swift{{ item }}
+      owner={{ username }}
+      group={{ group }}
+      state=directory
+    with_items:
+      - 2
+      - 3
+      - 4
+
   - name: create rc.local from template
     template: src=rc.local.j2 dest=/etc/rc.d/rc.local owner=root group=root mode=0755
 

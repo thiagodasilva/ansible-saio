@@ -38,6 +38,7 @@
       - automake
       - libtool
       - openssl-devel
+      - sysstat
 
   - name: install python modules with pip
     pip: name={{ item }} state=present extra_args='--upgrade'

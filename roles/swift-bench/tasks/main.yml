@@ -1,0 +1,17 @@
+
+  - name: assure /vagrant/source directory exists
+    file: path={{ source_dir }} state=directory
+
+  - name: check if swift-bench is already cloned
+    stat: path={{ source_dir }}/swift-bench
+    register: bench_cloned
+
+  - name: git clone swift-bench
+    git: repo=https://github.com/openstack/swift-bench.git dest={{ source_dir }}/swift-bench
+    when: not bench_cloned.stat.exists
+
+  - name: install swift-bench dependencies
+    pip: requirements={{ source_dir }}/swift-bench/requirements.txt
+    
+  - name: build a development installation of swift
+    command: python setup.py develop chdir={{ source_dir }}/swift

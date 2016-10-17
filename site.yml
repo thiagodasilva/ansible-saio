@@ -9,6 +9,7 @@
     - pre_config
     - liberasurecode
     - swift
+    - swift-bench
     - {role: swiftonfile, when: "{{ configure_swiftonfile }}" }
     - {role: hummingbird, when: "{{ configure_hummingbird }}" }
     - post_config
