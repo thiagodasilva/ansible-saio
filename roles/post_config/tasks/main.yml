@@ -11,12 +11,12 @@
     file: path=/etc/swift owner={{ username }} group={{ group }} recurse=yes
 
   - name: find config files to modify user option
-    raw: find /etc/swift/ -name \*.conf
-    register: conf_files
+    find: paths="/etc/swift" patterns="*.conf" recurse=yes
+    register: find_result
 
   - name: replace user name
-    replace: dest={{ item }} regexp=<your-user-name> replace={{ username }}
-    with_items: conf_files.stdout_lines
+    replace: dest={{ item.path }} regexp=<your-user-name> replace={{ username }}
+    with_items: "{{ find_result.files }}"
 
   - name: copy the SAIO scripts for resetting the environment
     command: cp -r {{ source_dir }}/swift/doc/saio/bin /home/{{ username }}/bin creates=/home/{{ username }}/bin

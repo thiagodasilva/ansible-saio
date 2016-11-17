@@ -40,3 +40,5 @@ nosetests.xml
 
 # swift souce
 source/
+
+site.retry
