@@ -6,7 +6,7 @@
     command: truncate -s 1GB /srv/swift-disk creates=/srv/swift-disk
 
   - name: create filesystem /srv/swift-disk
-    sudo: yes
+    become: true
     filesystem: fstype=xfs dev=/srv/swift-disk
 
   - name: create mount path /mnt/sdb1
@@ -28,7 +28,7 @@
       - 4
 
   - name: create symlinks
-    sudo: yes
+    become: true
     file: >
       src=/mnt/sdb1/{{ item }}
       dest=/srv/{{ item }}

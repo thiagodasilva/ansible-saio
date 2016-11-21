@@ -1,25 +1,25 @@
 
   - name: set udpserverrun
-    sudo: yes
+    become: true
     lineinfile: dest=/etc/rsyslog.conf regexp="^#$UDPServerRun 514" line="$UDPServerRun 514" state=present insertafter="^#$UDPServerRun 514"
 
   - name: set modload imudp
-    sudo: yes
+    become: true
     lineinfile: dest=/etc/rsyslog.conf regexp="^#$ModLoad imudp" line="$ModLoad imudp" state=present insertafter="#$ModLoad imudp"
 
   - name: checkout hummingbird branch
-    sudo: no
+    become: false
     local_action: shell git checkout -b hummingbird origin/feature/hummingbird chdir=source/swift
 
   - name: add GOPATH env. variable
     lineinfile: dest=/home/{{ username }}/.bashrc line="export GOPATH={{ gopath }}"
 
   - name: assure gopath directory exists
-    sudo: no
+    become: false
     file: path={{ gopath }}/src/github.com/openstack state=directory
 
   - name: link source to gopath
-    sudo: no
+    become: false
     file: >
       src={{ source_dir }}/swift
       dest={{ gopath }}/src/github.com/openstack/swift

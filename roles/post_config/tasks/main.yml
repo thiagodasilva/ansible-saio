@@ -54,14 +54,15 @@
   # end temp fix here
 
   - name: remake rings
+    become: false
     command: /home/{{ username }}/bin/remakerings
 
   - name: remove the current default storage policy
-    sudo: no
+    become: false
     lineinfile: dest=/etc/swift/swift.conf regexp="default = yes" state=absent
 
   - name: set the correct storage policy
-    sudo: no
+    become: false
     lineinfile: dest=/etc/swift/swift.conf line="default = yes" state=present insertafter="^name = {{default_storage_policy|default(gold)}}"
 
   - name: add new startmain in case of hummingbird
@@ -73,11 +74,11 @@
     when: configure_hummingbird
 
   - name: reset swift
-    sudo: no
+    become: false
     command: /home/{{ username }}/bin/resetswift
     when: not configure_hummingbird
 
   - name: start swift
-    sudo: no
+    become: false
     command: /home/{{ username }}/bin/startmain
     when: not configure_hummingbird
