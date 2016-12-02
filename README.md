@@ -4,6 +4,10 @@ SAIO Ansible playbook
 An Ansible playbook for provisioning a [Swift](http://docs.openstack.org/developer/swift/development_saio.html) and [Swift-on-File](https://github.com/openstack/swiftonfile/blob/master/doc/markdown/quick_start_guide.md) all-in-one
 development environment on CentOS.
 
+## Requirements:
+The CentOS 7 image being used by default does not have the VirtualBox Guest Additions preinstalled. Install the vagrant-vbguest plugin to have it installed on your guest VM automatically.
+ 1. `vagrant plugin install vagrant-vbguest`
+
 ## To run:
 To provision the VM, run:
  1. `vagrant up --provider=virtualbox`
