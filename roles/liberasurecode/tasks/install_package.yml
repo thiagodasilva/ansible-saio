@@ -1,0 +1,18 @@
+- name: install cloud sig
+  package: name=centos-release-openstack-newton state=present
+  when: (ansible_distribution in ['RedHat', 'CentOS'] and not libec_rpm)
+
+- name: installing dependencies
+  package: name={{ item }} state=present
+  with_items:
+    - liberasurecode
+    - python-pyeclib
+  when: not libec_rpm
+
+- name: install specific libec rpm
+  package: name={{ libec_rpm }}
+  when: libec_rpm
+
+- name: install specific pyeclib rpm
+  package: name={{ pyeclib_rpm }}
+  when: pyeclib_rpm

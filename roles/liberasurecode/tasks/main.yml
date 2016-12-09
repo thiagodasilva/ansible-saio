@@ -1,25 +1,6 @@
 
-  - name: assure /vagrant/source directory exists
-    file: path={{ source_dir }} state=directory
+- include: build_source.yml
+  when: build_libec
 
-  - name: check if liberasurecode is already cloned
-    stat: path={{ source_dir }}/liberasurecode
-    register: liberasurecode_cloned
-
-  - name: git clone liberasurecode
-    git: repo=https://github.com/openstack/liberasurecode.git dest={{ source_dir }}/liberasurecode
-    when: not liberasurecode_cloned.stat.exists
-
-  - name: build liberasurecode - autogen
-    command: ./autogen.sh chdir={{ source_dir }}/liberasurecode
-
-  - name: build liberasurecode - configure
-    command: ./configure chdir={{ source_dir }}/liberasurecode
-
-  - name: build liberasurecode - make
-    command: make chdir={{ source_dir }}/liberasurecode
-
-  - name: build liberasurecode - make install
-    command: sudo make install chdir={{ source_dir }}/liberasurecode
-
-
+- include: install_package.yml
+  when: not build_libec
