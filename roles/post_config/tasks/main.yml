@@ -53,6 +53,9 @@
     template: src=swift.conf.j2 dest=/etc/swift/swift.conf owner={{ username }} group={{ group }} mode=0644
   # end temp fix here
 
+  - name: increase open files limit to run probe tests
+    lineinfile: dest=/home/{{ username }}/.bashrc line="ulimit -n 4096"
+
   - name: remake rings
     become: false
     command: /home/{{ username }}/bin/remakerings
