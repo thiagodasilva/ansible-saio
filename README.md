@@ -50,7 +50,7 @@ In case you would like to use the provisioned VM as your development environment
 In case you already have a VM created and just wants to execute the Ansible playbook, run the following command:
  1. `ansible-playbook site.yml -i "192.168.56.103," --ask-sudo-pass`
 
-####Notes:
+#### Notes:
  * Make sure to update to the correct IP address on the command above (it's important to keep the comma ',' at the end) and the `username` and `group` variables in `global_vars.yml`
  * If testing on RHEL/CentOS, enable EPEL repository first.
 
