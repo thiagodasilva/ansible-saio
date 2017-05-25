@@ -138,3 +138,22 @@
 
   - name: start memcache
     service: name=memcached state=started enabled=yes
+
+  - name: configure rsyslog
+    command: cp {{ source_dir }}/swift/doc/saio/rsyslog.d/10-swift.conf /etc/rsyslog.d/
+
+  - name: modify /etc/rsyslog.conf
+    lineinfile: dest=/etc/rsyslog.conf
+                line="$PrivDropToGroup adm"
+                create=yes
+                insertafter="^#### GLOBAL DIRECTIVES"
+
+  - name: assure /var/log/swift directory exists
+    file: path=/var/log/swift
+          state=directory
+          owner=root
+          group=adm
+          mode="g+w"
+
+  - name: restart rsyslog
+    service: name=rsyslog state=restarted enabled=yes
