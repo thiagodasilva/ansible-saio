@@ -39,6 +39,8 @@
       - libtool
       - openssl-devel
       - sysstat
+      - redhat-rpm-config
+      - rsyslog
 
   - name: install golang
     yum: name={{ item }} state=present
