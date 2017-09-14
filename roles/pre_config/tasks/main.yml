@@ -41,6 +41,9 @@
       - sysstat
       - redhat-rpm-config
       - rsyslog
+      - redhat-lsb
+      - libxml2-devel
+      - libxslt-devel
 
   - name: install golang
     yum: name={{ item }} state=present
@@ -60,6 +63,7 @@
       - pyudev
       - pip
       - setuptools
+      - bindep
 
   - name: check if golang already installed
     stat: path=/usr/local/go
