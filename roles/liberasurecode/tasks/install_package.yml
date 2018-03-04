@@ -1,5 +1,5 @@
 - name: install cloud sig
-  package: name=centos-release-openstack-newton state=present
+  package: name=centos-release-openstack-queens state=present
   when: (ansible_distribution in ['RedHat', 'CentOS'] and not libec_rpm)
 
 - name: installing dependencies

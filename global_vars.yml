@@ -20,6 +20,6 @@ build_golang: no
 golang_bin: https://storage.googleapis.com/golang/go1.6.2.linux-amd64.tar.gz
 gopath: /home/{{ username }}/go_work
 
-build_libec: yes
+build_libec: no
 #libec_rpm: http://cbs.centos.org/kojifiles/packages/liberasurecode/1.4.0/1.el7/x86_64/liberasurecode-1.4.0-1.el7.x86_64.rpm
 #pyeclib_rpm: http://cbs.centos.org/kojifiles/packages/python-pyeclib/1.4.0/1.el7/x86_64/python-pyeclib-1.4.0-1.el7.x86_64.rpm
