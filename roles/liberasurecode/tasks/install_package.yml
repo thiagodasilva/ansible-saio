@@ -7,7 +7,7 @@
   with_items:
     - liberasurecode
     - python-pyeclib
-  when: not libec_rpm
+  when: libec_rpm is not defined or not libec_rpm
 
 - name: install specific libec rpm
   package: name={{ libec_rpm }}
