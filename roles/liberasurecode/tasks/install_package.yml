@@ -1,18 +1,18 @@
 - name: install cloud sig
   package: name=centos-release-openstack-queens state=present
-  when: (ansible_distribution in ['RedHat', 'CentOS'] and not libec_rpm)
+  when: (ansible_distribution in ['RedHat', 'CentOS'] and libec_rpm is defined)
 
 - name: installing dependencies
   package: name={{ item }} state=present
   with_items:
     - liberasurecode
     - python-pyeclib
-  when: not libec_rpm
+  when: libec_rpm is not defined or not libec_rpm
 
 - name: install specific libec rpm
   package: name={{ libec_rpm }}
-  when: libec_rpm
+  when: libec_rpm is defined and libec_rpm
 
 - name: install specific pyeclib rpm
   package: name={{ pyeclib_rpm }}
-  when: pyeclib_rpm
+  when: pyeclib_rpm is defined and pyeclib_rpm
