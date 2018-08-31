@@ -157,3 +157,12 @@
 
   - name: restart rsyslog
     service: name=rsyslog state=restarted enabled=yes
+
+  - name: clean up /etc/swift directory
+    file: path=/etc/swift state=absent
+
+  - name: create clean /etc/swift
+    command: cp -r {{ source_dir }}/swift/doc/saio/swift /etc/swift
+
+  - name: copy the SAIO scripts for resetting the environment
+    command: cp -r {{ source_dir }}/swift/doc/saio/bin /home/{{ username }}/bin creates=/home/{{ username }}/bin
