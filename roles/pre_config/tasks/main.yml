@@ -6,61 +6,72 @@
     when: ansible_distribution in ['RedHat', 'CentOS']
 
   - name: installing dependencies
-    yum: name={{ item }} state=present
-    with_items:
-      - curl
-      - gcc
-      - memcached
-      - rsync
-      - sqlite
-      - xfsprogs
-      - git
-      - git-core
-      - libffi-devel
-      - xinetd
-      - python-devel
-      - python-simplejson
-      - pyxattr
-      - python-eventlet
-      - python-greenlet
-      - python-netifaces
-      - python-pip
-      - python-dns
-      - python-mock
-      - tree
-      - vim
-      - make
-      - autoconf
-      - automake
-      - libtool
-      - openssl-devel
-      - sysstat
-      - redhat-rpm-config
-      - rsyslog
-      - redhat-lsb
-      - libxml2-devel
-      - libxslt-devel
+    yum:
+      name:
+        - curl
+        - gcc
+        - memcached
+        - rsync
+        - sqlite
+        - xfsprogs
+        - git
+        - git-core
+        - libffi-devel
+        - xinetd
+        - python-devel
+        - python-simplejson
+        - pyxattr
+        - python-eventlet
+        - python-greenlet
+        - python-netifaces
+        - python-pip
+        - python-dns
+        - python-mock
+        - tree
+        - vim
+        - make
+        - autoconf
+        - automake
+        - libtool
+        - openssl-devel
+        - sysstat
+        - redhat-rpm-config
+        - rsyslog
+        - redhat-lsb
+        - libxml2-devel
+        - libxslt-devel
+      state: present
+
+  - name: installing dependencies
+    yum:
+      name:
+        - python2-libselinux
+        - rsync-daemon
+      state: present
+    when: ansible_distribution in ['Fedora']
 
   - name: install golang
-    yum: name={{ item }} state=present
-    with_items:
-      - golang
+    yum:
+      name:
+        - golang
+      state: present
     when: not build_golang
 
   - name: install python modules with pip
-    pip: name={{ item }} state=present extra_args='--upgrade'
-    with_items:
-      - tox
-      - nose
-      - xattr
-      - git-review
-      - coverage
-      - Paste
-      - pyudev
-      - pip
-      - setuptools
-      - bindep
-      - crudini
+    pip:
+      name:
+        - tox
+        - nose
+        - xattr
+        - git-review
+        - coverage
+        - Paste
+        - pyudev
+        - pip
+        - setuptools
+        - bindep
+        - crudini
+      state: latest
 
   - name: check if golang already installed
     stat: path=/usr/local/go
