@@ -2,7 +2,7 @@
     yum: name=* state=latest
 
   - name: install centos-release-openstack-queens
-    yum: name=centos-release-openstack-queens state=present
+    yum: name=centos-release-openstack-stein state=present
     when: ansible_distribution in ['RedHat', 'CentOS']
 
   - name: installing dependencies
@@ -42,7 +42,7 @@
         - libxslt-devel
       state: present
 
-  - name: installing dependencies
+  - name: installing fedora only dependencies
     yum:
       name:
         - python2-libselinux
@@ -80,8 +80,8 @@
   - name: install golang from binary
     become: true
     unarchive: src={{ golang_bin }} dest=/usr/local copy=no
-    when: not golang_installed.stat.exists and configure_hummingbird and build_golang
+    when: not golang_installed.stat.exists and build_golang
 
   - name: make sure PATH includes the go bin directory
     lineinfile: dest=/home/{{ username }}/.bashrc line="export PATH=${PATH}:/usr/local/go/bin"
-    when: configure_hummingbird and build_golang
+    when: build_golang
