@@ -1,8 +1,12 @@
   - name: upgrade all packages
     yum: name=* state=latest
 
-  - name: install centos-release-openstack-queens
-    yum: name=centos-release-openstack-stein state=present
+  - name: install epel
+    yum: name=epel-release state=present
+    when: ansible_distribution in ['RedHat', 'CentOS']
+
+  - name: install centos-release-openstack-train
+    yum: name=centos-release-openstack-train state=present
     when: ansible_distribution in ['RedHat', 'CentOS']
 
   - name: installing dependencies
@@ -21,8 +25,6 @@
         - python-devel
         - python-simplejson
         - pyxattr
-        - python-eventlet
-        - python-greenlet
         - python-netifaces
         - python-pip
         - python-dns
